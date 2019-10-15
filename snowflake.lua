@@ -21,14 +21,14 @@ function LSNOW_FLAKE:new(workerid, datacenterid)
     self.sequence = 0
     self.worker_id_bits = 5
     self.data_center_id_bits = 5
-    self.max_worker_id = (1 << self.worker_id_bits) - 1
-    self.max_data_center_id = (1 << self.data_center_id_bits) - 1
+    self.max_worker_id = (1 << self.worker_id_bits)
+    self.max_data_center_id = (1 << self.data_center_id_bits)
     self.sequence_bits = 12
 
     self.worker_id_shift = self.sequence_bits
     self.data_center_id_shift = self.sequence_bits + self.worker_id_bits
     self.timestamp_left_shift = self.sequence_bits + self.worker_id_bits + self.data_center_id_bits
-    self.sequence_mask = (1 << self.sequence_bits) - 1
+    self.sequence_mask = (1 << self.sequence_bits)
     self.last_timestamp = -1
 
     if self.worker_id > self.max_worker_id or self.worker_id < 0 then
@@ -65,7 +65,7 @@ function LSNOW_FLAKE:get_id()
     end
 
     if self.last_timestamp == timestamp then
-        if (self.sequence + 1) >= self.sequence_mask then
+        if (self.sequence + 1) > self.sequence_mask then
             self.sequence = 0
         else
             self.sequence = self.sequence + 1
